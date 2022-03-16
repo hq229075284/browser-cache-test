@@ -17,7 +17,7 @@ function setHeader(req, res) {
       res.setHeader(EXPIRES, dayjs(new Date()).add(10, "m").toString());
       break;
     case CACHE_CONTROL:
-      res.setHeader(CACHE_CONTROL, "max-age=" + 10); // 单位是秒
+      res.setHeader(CACHE_CONTROL, "max-age=" + 60); // 单位是秒
       break;
     case IF_MODIFIED_SINCE_AND_LAST_MODIFIED:
       if (isJS(req)) {// 对js文件进行协商缓存
@@ -66,7 +66,7 @@ function setBody(req, res) {
 
 再次请求script.js时，在max-age时间内，不会与服务器交互
 
-当正常重载时，request headers会带上Cache-Control:max-age=0
+当正常重载时，首页请求（一般指对html文件的请求）的request headers会带上Cache-Control:max-age=0
 参考:https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#max-age_2
 
 当硬性重载时，request headers会带上Cache-Control:no-cache,会忽略cache，直接与服务器交互
